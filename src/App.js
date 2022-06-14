@@ -1,3 +1,4 @@
+// dependencies
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import Add from './components/Add.js'
@@ -6,9 +7,14 @@ import Edit from './components/Edit.js'
 const App = () => {
   let [item, setItem] = useState([])
 
+  // API switch between local and heroku
+  let api_path = 'https://etsyish-shop.herokuapp.com/api/shop'
+  // let api_path = 'http://localhost:8000/api/shop'
+
+
   const getItem = () => {
     axios
-    .get('http://localhost:8000/api/shop')
+    .get(api_path)
     .then(
       (response) => setItem(response.data),
       (err) => console.error(err)
@@ -18,7 +24,7 @@ const App = () => {
 
   const handleCreate = (addProduct) => {
     axios
-    .post('http://localhost:8000/api/shop', addProduct)
+    .post(api_path, addProduct)
     .then((response) => {
       console.log(response)
       getItem()
@@ -28,7 +34,7 @@ const App = () => {
   const handleUpdate = (editProduct) => {
     console.log(editProduct)
     axios
-      .put('http://localhost:8000/api/shop/' + editProduct.id, editProduct)
+      .put(api_path + editProduct.id, editProduct)
       .then((response) => {
         getItem()
       })
@@ -36,7 +42,7 @@ const App = () => {
 
   const handleDelete = (event, deletedProduct) => {
     axios
-      .delete('http://localhost:8000/api/shop/' + event.target.value)
+      .delete(api_path + event.target.value)
       .then((response) => {
         getItem()
       })
