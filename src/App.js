@@ -1,3 +1,4 @@
+// dependencies
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import Add from './components/Add.js'
@@ -6,8 +7,10 @@ import Edit from './components/Edit.js'
 const App = () => {
   let [item, setItem] = useState([])
 
+  // API switch between local and heroku
   let api_path = 'https://etsyish-shop.herokuapp.com/api/shop'
   // let api_path = 'http://localhost:8000/api/shop'
+
 
   const getItem = () => {
     axios
