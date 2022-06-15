@@ -9,7 +9,7 @@ const App = () => {
   let [item, setItem] = useState([])
   let [cart, setCart] = useState([])
   let [view, setView] = useState('shop')
-  let total = 0
+
   // API switch between local and heroku for SHOP
   // let api_path = 'https://etsyish-shop.herokuapp.com/api/shop'
   let api_path = 'http://localhost:8000/api/shop'
@@ -79,6 +79,16 @@ const App = () => {
       })
   }
 
+  const deleteFullCart = () => {
+    cart.map((deleteItem) => {
+      axios
+        .delete(cart_api_path + '/' + deleteItem.id)
+        .then((response) => {
+          getCart()
+        })
+    })
+  }
+
   const handleAddToCart = (addedItem) => {
     axios.post(cart_api_path, addedItem)
     .then((response) => {
@@ -131,6 +141,7 @@ const App = () => {
         })}
         <h3>Number of items: {cart.reduce((prevValue, currentValue) => {return prevValue + currentValue.quantity}, 0)}</h3>
         <h1>Total: ${cart.reduce((prevValue, currentValue) => {return prevValue + currentValue.price}, 0)}</h1>
+        <button onClick={deleteFullCart}>Delete Cart</button>
         </>
         : null}
     </>
