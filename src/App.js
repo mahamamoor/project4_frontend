@@ -9,7 +9,7 @@ const App = () => {
   let [item, setItem] = useState([])
   let [cart, setCart] = useState([])
   let [view, setView] = useState('shop')
-
+  let total = 0
   // API switch between local and heroku for SHOP
   // let api_path = 'https://etsyish-shop.herokuapp.com/api/shop'
   let api_path = 'http://localhost:8000/api/shop'
@@ -129,9 +129,10 @@ const App = () => {
             </div>
           )
         })}
+        <h3>Number of items: {cart.reduce((prevValue, currentValue) => {return prevValue + currentValue.quantity}, 0)}</h3>
+        <h1>Total: ${cart.reduce((prevValue, currentValue) => {return prevValue + currentValue.price}, 0)}</h1>
         </>
         : null}
-
     </>
   )
 }
