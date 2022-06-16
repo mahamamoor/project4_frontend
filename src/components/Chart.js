@@ -1,4 +1,4 @@
-import React from "react";
+import React, {Component} from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -19,42 +19,34 @@ ChartJS.register(
   Legend
 );
 
-function Chart(props) {
-  const options = {
-    response: true,
-    plugins: {
-      legend: {
-        position: "top",
-      },
-      title: {
-        display: true,
-        text: "Chart.js Bar Chart",
-      },
-    },
+class Chart extends Component {
+  constructor(props){
+    super(props);
+    this.state={
+      chartData: {
+        labels: ['2019', '2020', '2021', '2022', 'Q4 2020', 'Q4 2021'],
+        datasets: [
+          {
+            label: 'Earnings',
+            data: [500, 600, 700, 800, 300, 400],
+            backgroundColor: "rgba(255, 99, 132, 0.5)"
+          }
+        ]
+      }
+    };
   }
-  // data 
-  const data = {
-    labels: props.labels,
-    datasets: [
-      {
-        label: "Dataset 1",
-        data: [10, 20, 30],
-        backgroundColor: "rgba(255, 99, 132, 0.5)",
-      },
-      {
-        label: "Dataset 2",
-        data: [15, 25, 35],
-        backgroundColor: "rgba(53, 162, 235, 0.5)",
-      },
-    ],
-  };
-  return (
-    <>
-      <div style ={{ width: "1000px", margin: "auto auto"}}>
-        <Bar options ={options} data={data}/>
+  render() {
+    return(
+      <div className="chart">
+        <Bar
+          data={this.state.chartData}
+          options={{
+            maintainAspectRatio: false
+          }}
+        />
       </div>
-    </>
-  );
+    )
+  }
 }
 
 export default Chart;
