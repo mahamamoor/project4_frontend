@@ -103,7 +103,7 @@ const App = () => {
 
   return (
     <>
-      <h1>Etsy-ish</h1>
+      <img src="https://i.ibb.co/ZKBzN4C/etsy-ish-main-logo.png" alt="etsy-ish-main-logo" width="300px"/>
       { view == 'shop' ?
       <>
         <button onClick={cartView}>View Cart</button>
