@@ -9,6 +9,7 @@ const App = () => {
   let [item, setItem] = useState([])
   let [cart, setCart] = useState([])
   let [view, setView] = useState('shop')
+  let [query, setQuery] = useState("")
 
   // API switch between local and heroku for SHOP
   // let api_path = 'https://etsyish-shop.herokuapp.com/api/shop'
@@ -106,9 +107,18 @@ const App = () => {
       <img src="https://i.ibb.co/ZKBzN4C/etsy-ish-main-logo.png" alt="etsy-ish-main-logo" width="300px"/>
       { view == 'shop' ?
       <>
+        <div className="search-bar-div">
+          <input className="search-bar" placeholder="Search for Item" onChange={event => setQuery(event.target.value)}/>
+        </div>
         <button onClick={cartView}>View Cart</button>
       <Add handleCreate={handleCreate}/>
-        {item.map((item) => {
+        {item.filter(item => {
+          if (query === '') {
+            return item
+          } else if (item.title.toLowerCase().includes(query.toLowerCase())) {
+            return item
+          }
+        }).map((item) => {
           return (
             <div className="item" key={item.id}>
               <h4>Title: {item.title}</h4>
