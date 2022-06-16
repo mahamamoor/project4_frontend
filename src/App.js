@@ -4,8 +4,10 @@ import axios from 'axios'
 import Add from './components/Add.js'
 import Edit from './components/Edit.js'
 import AddToCart from './components/AddToCart.js'
+import Chart from './components/Chart.js'
 
 const App = () => {
+  const [data, setData] = useState([])
   let [item, setItem] = useState([])
   let [cart, setCart] = useState([])
   let [view, setView] = useState('shop')
@@ -131,7 +133,12 @@ const App = () => {
         })}
         </>
         : null}
-
+        <div className="chart">
+          <h2>Financial Highlights</h2>
+          <h3>Revenue in Millions</h3>
+          <Chart />
+          <button onClick={() => window.location.reload()}>Refresh Chart</button>
+        </div>
     </>
   )
 }
