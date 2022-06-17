@@ -10,6 +10,7 @@ const App = () => {
   let [cart, setCart] = useState([])
   let [view, setView] = useState('shop')
   let [query, setQuery] = useState("")
+  let [order, setOrder] = useState("")
 
   // API switch between local and heroku for SHOP
   // let api_path = 'https://etsyish-shop.herokuapp.com/api/shop'
@@ -25,6 +26,15 @@ const App = () => {
 
   const cartView = () => {
     setView('cart')
+  }
+
+  const checkoutView = () => {
+    setView('checkout')
+  }
+
+  const thanksView = () => {
+    setView('thanks')
+    setOrder(Math.floor(Math.random() * 20))
   }
 
   const getItem = () => {
@@ -51,7 +61,7 @@ const App = () => {
     .post(api_path, addProduct)
     .then((response) => {
       console.log(response)
-      getItem()
+      setItem([...item, response.data])
     })
   }
 
@@ -60,7 +70,9 @@ const App = () => {
     axios
       .put(api_path + editProduct.id, editProduct)
       .then((response) => {
-        getItem()
+        setItem(item.map((item) => {
+          return item.id !== response.data.id ? item : response.data
+        }))
       })
   }
 
@@ -68,7 +80,7 @@ const App = () => {
     axios
       .delete(api_path + '/' + event.target.value)
       .then((response) => {
-        getItem()
+        setItem(item.filter(item => item.id !== deletedProduct.id))
       })
   }
 
@@ -76,7 +88,7 @@ const App = () => {
     axios
       .delete(cart_api_path + '/' + event.target.value)
       .then((response) => {
-        getCart()
+        setCart(cart.filter(product => product.id !== deletedCartProduct.id))
       })
   }
 
@@ -93,7 +105,7 @@ const App = () => {
   const handleAddToCart = (addedItem) => {
     axios.post(cart_api_path, addedItem)
     .then((response) => {
-      getCart(response.data)
+      setCart([...cart, response.data])
     })
   }
 
@@ -152,6 +164,32 @@ const App = () => {
         <h3>Number of items: {cart.reduce((prevValue, currentValue) => {return prevValue + currentValue.quantity}, 0)}</h3>
         <h1>Total: ${cart.reduce((prevValue, currentValue) => {return prevValue + currentValue.price}, 0)}</h1>
         <button onClick={deleteFullCart}>Delete Cart</button>
+        <button onClick={checkoutView}>Go to Checkout</button>
+        </>
+        : null}
+
+        {view == 'checkout' ?
+        <>
+        <h1>Finalize Checkout</h1>
+        <button onClick={cartView}>Return to Cart</button>
+        {cart.map((cartItem) => {
+          return (
+            <div className="cart-item" key={cartItem.id}>
+              <img src={cartItem.image}/>
+              <h4>{cartItem.title} x {cartItem.quantity}</h4>
+            </div>
+          )
+        })}
+        <h1>Total: ${cart.reduce((prevValue, currentValue) => {return prevValue + currentValue.price}, 0)}</h1>
+        <button onClick={thanksView}>Complete Order</button>
+        </>
+        : null}
+
+        {view == 'thanks' ?
+        <>
+          <h1>Thank you for your order!</h1>
+          <h2>Your order number is #0000{order}</h2>
+          <button onClick={shopView} onMouseUp={deleteFullCart}>Return to Shop</button>
         </>
         : null}
     </>
