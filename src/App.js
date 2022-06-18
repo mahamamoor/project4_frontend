@@ -4,13 +4,17 @@ import axios from 'axios'
 import Add from './components/Add.js'
 import Edit from './components/Edit.js'
 import AddToCart from './components/AddToCart.js'
+import { use } from 'express/lib/router/index.js'
+import Navbar from 'react-bootstrap/Navbar'
+import Container from 'react-bootstrap/Container'
+
 
 const App = () => {
   let [item, setItem] = useState([])
   let [cart, setCart] = useState([])
   let [view, setView] = useState('shop')
   let [query, setQuery] = useState("")
-
+  let [user, setUser] = useState('')
   // API switch between local and heroku for SHOP
   // let api_path = 'https://etsyish-shop.herokuapp.com/api/shop'
   let api_path = 'http://localhost:8000/api/shop'
@@ -18,6 +22,9 @@ const App = () => {
   // API switch between local and heroku for CART
   // let cart_api_path = 'https://etsyish-shop.herokuapp.com/api/cart'
   let cart_api_path = 'http://localhost:8000/api/cart'
+  
+
+  let auth_api_path = 'http://localhost:8000/api/auth'
 
   const shopView = () => {
     setView('shop')
@@ -36,6 +43,14 @@ const App = () => {
     )
     .catch((error) => console.error(error))
   }
+
+  const getUser = () =>{
+    axios.get(auth_api_path)
+    .then(
+    (response) => setUser(response.data),
+    (err) => console.log(err)
+    )}
+
 
   const getCart = () => {
     axios.get(cart_api_path)
@@ -97,20 +112,43 @@ const App = () => {
     })
   }
 
+  const createUser = (user) => {
+    axios.post(auth_api_path, user)
+    .then((response) =>{
+      getUser(response.data)
+    })
+  }
+ 
   useEffect(() => {
     getItem()
     getCart()
+    getUser()
   }, [])
+
+
 
   return (
     <>
-      <img src="https://i.ibb.co/ZKBzN4C/etsy-ish-main-logo.png" alt="etsy-ish-main-logo" width="300px"/>
-      { view == 'shop' ?
-      <>
-        <div className="search-bar-div">
+    <Navbar>
+    <img src="https://i.ibb.co/ZKBzN4C/etsy-ish-main-logo.png" alt="etsy-ish-main-logo" width="300px"/>
+      <form onSubmit={createUser}>
+        Create User
+      <input type='text' name='name'></input>
+      <input type='password' name='password'></input>
+      <button type='submit'>submit</button>
+      </form>
+      <div className="search-bar-div">
           <input className="search-bar" placeholder="Search for Item" onChange={event => setQuery(event.target.value)}/>
         </div>
+      </Navbar>
+      <div className='options'>
+        <a>Decor</a>
+        <a></a>
+      </div>
+      { view == 'shop' ?
+      <>
         <button onClick={cartView}>View Cart</button>
+
       <Add handleCreate={handleCreate}/>
         {item.filter(item => {
           if (query === '') {
@@ -123,7 +161,7 @@ const App = () => {
             <div className="item" key={item.id}>
               <h4>Title: {item.title}</h4>
               <h5>Description: {item.description}</h5>
-              <h5>Image: {item.image}</h5>
+              <img src={item.image} width='300'hight='300'/>
               <h5>Price: {item.price}</h5>
               <Edit handleUpdate={handleUpdate} item={item}/>
               <button onClick={(event)=> {handleDelete(event, item)}} value={item.id}>
@@ -157,5 +195,6 @@ const App = () => {
     </>
   )
 }
+
 
 export default App;
