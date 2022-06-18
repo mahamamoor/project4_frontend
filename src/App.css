@@ -18,7 +18,10 @@
     display: flex;
     width: 100%;
     padding: 2em;
+<<<<<<< HEAD
     background-color: white;
+=======
+>>>>>>> 4ca12dfb2f58efbf3d5054f16602ce6298f69b8d
 }
 
 .login{

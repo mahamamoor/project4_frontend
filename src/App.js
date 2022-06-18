@@ -1,9 +1,12 @@
 // dependencies
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Component} from 'react'
 import axios from 'axios'
 import Add from './components/Add.js'
 import Edit from './components/Edit.js'
 import AddToCart from './components/AddToCart.js'
+import Nav from './components/Nav';
+import LoginForm from './components/LoginForm';
+import SignupForm from './components/SignupForm';
 import { use } from 'express/lib/router/index.js'
 import Navbar from 'react-bootstrap/Navbar'
 import Container from 'react-bootstrap/Container'
@@ -11,6 +14,7 @@ import './App.css'
 import Button from 'react-bootstrap/Button'
 import 'bootstrap/dist/css/bootstrap.css';
 import Dropdown from 'react-bootstrap/Dropdown'
+import Auth from './components/auth'
 import Chart from './components/Chart.js'
 import './App.css'
 const App = () => {
@@ -28,6 +32,9 @@ const App = () => {
   // API switch between local and heroku for CART
   // let cart_api_path = 'https://etsyish-shop.herokuapp.com/api/cart'
   let cart_api_path = 'http://localhost:8000/api/cart'
+
+
+  let auth_api_path = 'http://localhost:8000/api/auth'
 
 
   let auth_api_path = 'http://localhost:8000/api/auth'
