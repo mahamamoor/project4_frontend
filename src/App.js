@@ -1,9 +1,12 @@
 // dependencies
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Component} from 'react'
 import axios from 'axios'
 import Add from './components/Add.js'
 import Edit from './components/Edit.js'
 import AddToCart from './components/AddToCart.js'
+import Nav from './components/Nav';
+import LoginForm from './components/LoginForm';
+import SignupForm from './components/SignupForm';
 import { use } from 'express/lib/router/index.js'
 import Navbar from 'react-bootstrap/Navbar'
 import Container from 'react-bootstrap/Container'
@@ -11,12 +14,13 @@ import './App.css'
 import Button from 'react-bootstrap/Button'
 import 'bootstrap/dist/css/bootstrap.css';
 import Dropdown from 'react-bootstrap/Dropdown'
+import Auth from './components/auth'
 const App = () => {
   let [item, setItem] = useState([])
   let [cart, setCart] = useState([])
   let [view, setView] = useState('shop')
   let [query, setQuery] = useState("")
-  let [user, setUser] = useState('')
+ 
   // API switch between local and heroku for SHOP
   // let api_path = 'https://etsyish-shop.herokuapp.com/api/shop'
   let api_path = 'http://localhost:8000/api/shop'
@@ -45,14 +49,6 @@ const App = () => {
     )
     .catch((error) => console.error(error))
   }
-
-  const getUser = () =>{
-    axios.get(auth_api_path)
-    .then(
-    (response) => setUser(response.data),
-    (err) => console.log(err)
-    )}
-
 
   const getCart = () => {
     axios.get(cart_api_path)
@@ -114,20 +110,10 @@ const App = () => {
     })
   }
 
-  const createUser = (user) => {
-    axios.post(auth_api_path, user)
-    .then((response) =>{
-      getUser(response.data)
-    })
-  }
- 
   useEffect(() => {
     getItem()
     getCart()
-    getUser()
-  }, [])
-
-
+  }, []); 
 
   return (
     <>
@@ -139,19 +125,13 @@ const App = () => {
         </div>
         { view == 'shop' ? 
            <Button variant="outline-dark"  onClick={cartView}>View Cart</Button> : null }
-
           {view == 'cart' ? 
           <Button variant="outline-dark"  onClick={shopView}>View Shop</Button> : null}
         </Container>
       </Navbar>
-        <div className='login'>
-      <form onSubmit={createUser}>
-      Create Or Login
-      <input className='name' placeholder='name' type='text' name='name'></input>
-      <input className='name' type='password' placeholder='password' name='password'></input>
-      <Button variant="outline-dark" type='submit'>submit</Button>
-      </form>
-      </div>
+      <div className='login'>
+          <Auth/>
+        </div>
       <div className='options'>
         <div>
         <img id='rim' src="https://www.etsy.com/assets/dist/images/giftcards/designs/50/560x332.20201215163345.png" width='100'/>
@@ -255,7 +235,6 @@ const App = () => {
         </footer>
     </>
   )
-}
-
-
+      }
+      
 export default App;
