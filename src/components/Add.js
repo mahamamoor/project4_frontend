@@ -1,4 +1,6 @@
 import React, {useState, useEffect} from 'react'
+import Button from 'react-bootstrap/Button'
+import '../App.css'
 
 const Add = (props) => {
   let emptyProduct = {title: '', description:'', image: '', price: ''}
@@ -15,6 +17,8 @@ const Add = (props) => {
 
   return(
     <>
+    <h2 id='addTitle'>Want to add something to this amazing site?</h2>
+    <div className='add'>
       <form onSubmit ={handleSubmit}>
         <label htmlFor="title">Title: </label>
         <input type="text" name="title" value={product.title} onChange={handleChange}/>
@@ -26,8 +30,9 @@ const Add = (props) => {
         <input type="text" name="image" value={product.image} onChange={handleChange}/>
         <label htmlFor="price">Price: </label>
         <input type="number" name="price" value={product.price} onChange={handleChange}/>
-        <input type="submit"/>
+        <Button variant="outline-dark" type="submit">submit</Button>
       </form>
+      </div>
     </>
   )
 }

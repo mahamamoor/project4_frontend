@@ -1,4 +1,5 @@
 import {useState} from 'react'
+import Button from 'react-bootstrap/esm/Button'
 
 const Edit = (props) => {
   let emptyItem = {title:'', description:'', image:'', price: 0}
@@ -32,7 +33,7 @@ const Edit = (props) => {
           <br />
           <label>Price: </label>
           <input type="number" name="price" onChange={handleChange}/>
-          <input type="submit"/>
+          <Button variant='outline-light' type="submit">change</Button>
         </form>
       </details>
     </>
