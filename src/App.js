@@ -4,6 +4,8 @@ import axios from 'axios'
 import Add from './components/Add.js'
 import Edit from './components/Edit.js'
 import AddToCart from './components/AddToCart.js'
+import Chart from './components/Chart.js'
+import './App.css'
 
 const App = () => {
   let [item, setItem] = useState([])
@@ -35,6 +37,10 @@ const App = () => {
   const thanksView = () => {
     setView('thanks')
     setOrder(Math.floor(Math.random() * 20))
+  }
+
+  const financesView = () => {
+    setView('finances')
   }
 
   const getItem = () => {
@@ -116,13 +122,16 @@ const App = () => {
 
   return (
     <>
-      <img src="https://i.ibb.co/ZKBzN4C/etsy-ish-main-logo.png" alt="etsy-ish-main-logo" width="300px"/>
       { view == 'shop' ?
       <>
-        <div className="search-bar-div">
-          <input className="search-bar" placeholder="Search for Item" onChange={event => setQuery(event.target.value)}/>
+        <div className="header">
+          <img src="https://i.ibb.co/ZKBzN4C/etsy-ish-main-logo.png" alt="etsy-ish-main-logo" className="logo" onClick={financesView} title="See Etsy-ish Financials"/>
+          <div className="search-bar-div">
+            <input className="search-bar" placeholder="Search items" onChange={event => setQuery(event.target.value)}/>
+          </div>
+          <a href="#" className="sign-in">Sign In</a>
+          <img src="cart-icon-28356.png" onClick={cartView} className='view-cart'/>
         </div>
-        <button onClick={cartView}>View Cart</button>
       <Add handleCreate={handleCreate}/>
         {item.filter(item => {
           if (query === '') {
@@ -150,6 +159,7 @@ const App = () => {
 
       {view == 'cart' ?
         <>
+        <img src="https://i.ibb.co/ZKBzN4C/etsy-ish-main-logo.png" alt="etsy-ish-main-logo" width="300px"/>
         <h1>Your Cart:</h1>
       <button onClick={shopView}>View Shop</button>
         {cart.map((cartItem) => {
@@ -190,6 +200,18 @@ const App = () => {
           <h1>Thank you for your order!</h1>
           <h2>Your order number is #0000{order}</h2>
           <button onClick={shopView} onMouseUp={deleteFullCart}>Return to Shop</button>
+        </>
+        : null}
+
+        {view == 'finances' ?
+        <>
+        <div className="chart">
+          <h2 className="chart-header-1">Financial Highlights</h2>
+          <h3 className="chart-header-2">Revenue in Millions</h3>
+          <Chart />
+          <button onClick={() => window.location.reload()}>Refresh Chart</button>
+          <button onClick={shopView}>Return to Shop</button>
+        </div>
         </>
         : null}
     </>
