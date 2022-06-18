@@ -18,6 +18,10 @@
     display: flex;
     width: 100%;
     padding: 2em;
+<<<<<<< HEAD
+    background-color: white;
+=======
+>>>>>>> 4ca12dfb2f58efbf3d5054f16602ce6298f69b8d
 }
 
 .login{
@@ -67,4 +71,24 @@ footer{
     justify-content: flex-end;
     margin-right: 10em;
     margin-top: -2em;
+}
+.search-bar {
+  border-radius: 35pt;
+  background-color: whitesmoke;
+}
+.view-cart {
+  width: 35px;
+  cursor: pointer;
+}
+.main-logo {
+  height: 40pt;
+  cursor: pointer;
+}
+.chart-header-1 {
+  text-align: center;
+  padding-top: 30px;
+}
+
+.chart-header-2{
+  text-align: center;
 }

@@ -15,12 +15,16 @@ import Button from 'react-bootstrap/Button'
 import 'bootstrap/dist/css/bootstrap.css';
 import Dropdown from 'react-bootstrap/Dropdown'
 import Auth from './components/auth'
+import Chart from './components/Chart.js'
+import './App.css'
 const App = () => {
   let [item, setItem] = useState([])
   let [cart, setCart] = useState([])
   let [view, setView] = useState('shop')
   let [query, setQuery] = useState("")
- 
+  let [order, setOrder] = useState("")
+  let [user, setUser] = useState('')
+
   // API switch between local and heroku for SHOP
   // let api_path = 'https://etsyish-shop.herokuapp.com/api/shop'
   let api_path = 'http://localhost:8000/api/shop'
@@ -28,7 +32,10 @@ const App = () => {
   // API switch between local and heroku for CART
   // let cart_api_path = 'https://etsyish-shop.herokuapp.com/api/cart'
   let cart_api_path = 'http://localhost:8000/api/cart'
-  
+
+
+  let auth_api_path = 'http://localhost:8000/api/auth'
+
 
   let auth_api_path = 'http://localhost:8000/api/auth'
 
@@ -40,6 +47,19 @@ const App = () => {
     setView('cart')
   }
 
+  const checkoutView = () => {
+    setView('checkout')
+  }
+
+  const thanksView = () => {
+    setView('thanks')
+    setOrder(Math.floor(Math.random() * 20))
+  }
+
+  const financesView = () => {
+    setView('finances')
+  }
+
   const getItem = () => {
     axios
     .get(api_path)
@@ -49,6 +69,14 @@ const App = () => {
     )
     .catch((error) => console.error(error))
   }
+
+  const getUser = () =>{
+    axios.get(auth_api_path)
+    .then(
+    (response) => setUser(response.data),
+    (err) => console.log(err)
+    )}
+
 
   const getCart = () => {
     axios.get(cart_api_path)
@@ -64,7 +92,7 @@ const App = () => {
     .post(api_path, addProduct)
     .then((response) => {
       console.log(response)
-      getItem()
+      setItem([...item, response.data])
     })
   }
 
@@ -73,7 +101,9 @@ const App = () => {
     axios
       .put(api_path + editProduct.id, editProduct)
       .then((response) => {
-        getItem()
+        setItem(item.map((item) => {
+          return item.id !== response.data.id ? item : response.data
+        }))
       })
   }
 
@@ -81,7 +111,7 @@ const App = () => {
     axios
       .delete(api_path + '/' + event.target.value)
       .then((response) => {
-        getItem()
+        setItem(item.filter(item => item.id !== deletedProduct.id))
       })
   }
 
@@ -89,7 +119,7 @@ const App = () => {
     axios
       .delete(cart_api_path + '/' + event.target.value)
       .then((response) => {
-        getCart()
+        setCart(cart.filter(product => product.id !== deletedCartProduct.id))
       })
   }
 
@@ -106,32 +136,48 @@ const App = () => {
   const handleAddToCart = (addedItem) => {
     axios.post(cart_api_path, addedItem)
     .then((response) => {
-      getCart(response.data)
+      setCart([...cart, response.data])
+    })
+  }
+
+  const createUser = (user) => {
+    axios.post(auth_api_path, user)
+    .then((response) =>{
+      getUser(response.data)
     })
   }
 
   useEffect(() => {
     getItem()
     getCart()
-  }, []); 
+    getUser()
+  }, [])
+
+
 
   return (
     <>
     <Navbar className='Navbar' sticky='top'>
       <Container>
-    <img src="https://i.ibb.co/ZKBzN4C/etsy-ish-main-logo.png" alt="etsy-ish-main-logo" width="200px"/>
+    <img src="https://i.ibb.co/ZKBzN4C/etsy-ish-main-logo.png" alt="etsy-ish-main-logo" className="main-logo" onClick={financesView}/>
           <div className="search-bar-div">
           <input className="search-bar" placeholder="Search for Item" onChange={event => setQuery(event.target.value)}/>
         </div>
-        { view == 'shop' ? 
-           <Button variant="outline-dark"  onClick={cartView}>View Cart</Button> : null }
-          {view == 'cart' ? 
+        { view == 'shop' ?
+           <img src="cart-icon-28356.png" onClick={cartView} className='view-cart'/> : null }
+
+          {view == 'cart' ?
           <Button variant="outline-dark"  onClick={shopView}>View Shop</Button> : null}
         </Container>
       </Navbar>
-      <div className='login'>
-          <Auth/>
-        </div>
+        <div className='login'>
+      <form onSubmit={createUser}>
+      Create Or Login
+      <input className='name' placeholder='name' type='text' name='name'></input>
+      <input className='name' type='password' placeholder='password' name='password'></input>
+      <Button variant="outline-dark" type='submit'>submit</Button>
+      </form>
+      </div>
       <div className='options'>
         <div>
         <img id='rim' src="https://www.etsy.com/assets/dist/images/giftcards/designs/50/560x332.20201215163345.png" width='100'/>
@@ -186,9 +232,9 @@ const App = () => {
                   </Dropdown.Toggle>
 
                   <Dropdown.Menu variant="dark">
-                  
+
                       <Edit handleUpdate={handleUpdate} item={item} />
-                  
+
                     <Dropdown.Item>
                       {" "}
                       <Button
@@ -207,14 +253,15 @@ const App = () => {
             </div>
           );
         })}
-       
+
         </>
         : null}
 
       {view == 'cart' ?
         <>
+        <img src="https://i.ibb.co/ZKBzN4C/etsy-ish-main-logo.png" alt="etsy-ish-main-logo" width="300px"/>
         <h1>Your Cart:</h1>
-      
+
         {cart.map((cartItem) => {
           return (
             <div className="cart-item" key={cartItem.id}>
@@ -227,6 +274,44 @@ const App = () => {
         <h3>Number of items: {cart.reduce((prevValue, currentValue) => {return prevValue + currentValue.quantity}, 0)}</h3>
         <h1>Total: ${cart.reduce((prevValue, currentValue) => {return prevValue + currentValue.price}, 0)}</h1>
         <Button variant="outline-dark"  onClick={deleteFullCart}>Delete Cart</Button>
+        <button onClick={checkoutView}>Go to Checkout</button>
+        </>
+        : null}
+
+        {view == 'checkout' ?
+        <>
+        <h1>Finalize Checkout</h1>
+        <button onClick={cartView}>Return to Cart</button>
+        {cart.map((cartItem) => {
+          return (
+            <div className="cart-item" key={cartItem.id}>
+              <img src={cartItem.image}/>
+              <h4>{cartItem.title} x {cartItem.quantity}</h4>
+            </div>
+          )
+        })}
+        <h1>Total: ${cart.reduce((prevValue, currentValue) => {return prevValue + currentValue.price}, 0)}</h1>
+        <button onClick={thanksView}>Complete Order</button>
+        </>
+        : null}
+
+        {view == 'thanks' ?
+        <>
+          <h1>Thank you for your order!</h1>
+          <h2>Your order number is #0000{order}</h2>
+          <button onClick={shopView} onMouseUp={deleteFullCart}>Return to Shop</button>
+        </>
+        : null}
+
+        {view == 'finances' ?
+        <>
+        <div className="chart">
+          <h2 className="chart-header-1">Financial Highlights</h2>
+          <h3 className="chart-header-2">Revenue in Millions</h3>
+          <Chart />
+          <button onClick={() => window.location.reload()}>Refresh Chart</button>
+          <button onClick={shopView}>Return to Shop</button>
+        </div>
         </>
         : null}
         <footer>
@@ -235,6 +320,7 @@ const App = () => {
         </footer>
     </>
   )
-      }
-      
+}
+
+
 export default App;
