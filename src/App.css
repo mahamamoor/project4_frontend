@@ -36,3 +36,46 @@
     transform: rotate(360deg);
   }
 }
+
+.chart-header-1 {
+  text-align: center;
+}
+
+.chart-header-2{
+  text-align: center;
+}
+.search-bar-div {
+  grid-area: search;
+  align-self: center;
+}
+.search-bar {
+  border-radius: 50px;
+  width: 90%;
+  height: 48px;
+  font-size: 14pt;
+  padding: 2px 23px 2px 30px;
+  background-color: whitesmoke;
+}
+.logo {
+  height: 40px;
+  padding: 15px;
+  grid-area: logo;
+  cursor: pointer;
+}
+.header {
+  padding: 15px;
+  display: grid;
+  grid-template-columns: [first] 15px [line2] 1fr [line3] 7fr [line4] 1fr [line5] 1fr [line6] 15px [last];
+  grid-template-areas:
+  ". logo search sign-in cart ."
+}
+.view-cart {
+  grid-area: cart;
+  width: 35px;
+  align-self: center;
+  cursor: pointer;
+}
+.sign-in {
+  grid-area: sign-in;
+  align-self: center;
+}
