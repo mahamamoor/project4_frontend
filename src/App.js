@@ -84,7 +84,7 @@ const App = () => {
       (response) => setCart(response.data),
       (err) => console.error(err)
     )
-    .catch((error.response.data) => console.error(error.response.data))
+    .catch((error) => console.error(error.response.data))
   }
 
   const handleCreate = (addProduct) => {
