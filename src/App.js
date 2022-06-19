@@ -37,7 +37,7 @@ const App = () => {
   let auth_api_path = 'http://localhost:8000/api/auth'
 
 
-  let auth_api_path = 'http://localhost:8000/api/auth'
+  // let auth_api_path = 'http://localhost:8000/api/auth'
 
   const shopView = () => {
     setView('shop')
@@ -99,7 +99,7 @@ const App = () => {
   const handleUpdate = (editProduct) => {
     console.log(editProduct)
     axios
-      .put(api_path + editProduct.id, editProduct)
+      .put(api_path + '/' + editProduct.id, editProduct)
       .then((response) => {
         setItem(item.map((item) => {
           return item.id !== response.data.id ? item : response.data
@@ -218,9 +218,9 @@ const App = () => {
             <div className="items">
               <div className="item" key={item.id}>
                 <h4>{item.title}</h4>
-                <img src={item.image} width="300" hight="300" />
+                <img src={item.image} width="300" height="300" />
                 <h5>About - {item.description}</h5>
-                <h5>Price - {item.price}</h5>
+                <h5>Price - ${item.price}</h5>
                 <h4>✰✰✰✰✰✰✰(everyone)</h4>
                 <AddToCart handleAddToCart={handleAddToCart} item={item} />
                 <Dropdown className='drop'>
@@ -244,7 +244,7 @@ const App = () => {
                         }}
                         value={item.id}
                       >
-                        X
+                        delete item
                       </Button>
                     </Dropdown.Item>
                   </Dropdown.Menu>
@@ -266,7 +266,7 @@ const App = () => {
           return (
             <div className="cart-item" key={cartItem.id}>
               <h4>{cartItem.title}, ${cartItem.price}.00, quantity: {cartItem.quantity}</h4>
-              <Button variant="outline-dark"  onClick={(event)=> {handleCartDelete(event, cartItem)}} value={cartItem.id}>X
+              <Button variant="outline-dark"  onClick={(event)=> {handleCartDelete(event, cartItem)}} value={cartItem.id}>delete item
               </Button>
             </div>
           )
@@ -274,14 +274,14 @@ const App = () => {
         <h3>Number of items: {cart.reduce((prevValue, currentValue) => {return prevValue + currentValue.quantity}, 0)}</h3>
         <h1>Total: ${cart.reduce((prevValue, currentValue) => {return prevValue + currentValue.price}, 0)}</h1>
         <Button variant="outline-dark"  onClick={deleteFullCart}>Delete Cart</Button>
-        <button onClick={checkoutView}>Go to Checkout</button>
+        <Button variant="outline-dark" onClick={checkoutView}>Go to Checkout</Button>
         </>
         : null}
 
         {view == 'checkout' ?
         <>
         <h1>Finalize Checkout</h1>
-        <button onClick={cartView}>Return to Cart</button>
+        <Button onClick={cartView} variant="outline-dark">Return to Cart</Button>
         {cart.map((cartItem) => {
           return (
             <div className="cart-item" key={cartItem.id}>
@@ -291,7 +291,7 @@ const App = () => {
           )
         })}
         <h1>Total: ${cart.reduce((prevValue, currentValue) => {return prevValue + currentValue.price}, 0)}</h1>
-        <button onClick={thanksView}>Complete Order</button>
+        <Button onClick={thanksView} variant="outline-dark">Complete Order</Button>
         </>
         : null}
 
