@@ -37,7 +37,7 @@ const App = () => {
   let auth_api_path = 'http://localhost:8000/api/auth'
 
 
-  // let auth_api_path = 'http://localhost:8000/api/auth'
+  // let auth_api_path = 'https://etsyish-shop.herokuapp.com/api/auth'
 
   const shopView = () => {
     setView('shop')
@@ -82,9 +82,9 @@ const App = () => {
     axios.get(cart_api_path)
     .then(
       (response) => setCart(response.data),
-      (err) => console.error(err)
+      (err) => console.error(err.response.data)
     )
-    .catch((error) => console.error(error))
+    .catch((error) => console.error(error.response.data))
   }
 
   const handleCreate = (addProduct) => {
