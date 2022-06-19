@@ -259,7 +259,6 @@ const App = () => {
 
       {view == 'cart' ?
         <>
-        <img src="https://i.ibb.co/ZKBzN4C/etsy-ish-main-logo.png" alt="etsy-ish-main-logo" width="300px"/>
         <h1>Your Cart:</h1>
 
         {cart.map((cartItem) => {
