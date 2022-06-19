@@ -31,7 +31,7 @@ const App = () => {
 
   // API switch between local and heroku for CART
   let cart_api_path = 'https://etsyish-shop.herokuapp.com/api/cart'
-  let cart_api_path = 'http://localhost:8000/api/cart'
+  // let cart_api_path = 'http://localhost:8000/api/cart'
 
 
   let auth_api_path = 'http://localhost:8000/api/auth'
