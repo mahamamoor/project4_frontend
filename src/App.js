@@ -205,7 +205,7 @@ const App = () => {
 
         {view == 'finances' ?
         <>
-        <div className="chart">
+        <div className="chart-container">
           <h2 className="chart-header-1">Financial Highlights</h2>
           <h3 className="chart-header-2">Revenue in Millions</h3>
           <Chart />

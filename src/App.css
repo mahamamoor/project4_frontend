@@ -36,11 +36,15 @@
     transform: rotate(360deg);
   }
 }
-
+.chart-container{
+  padding-top: 30px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-bottom: 40px;
+}
 .chart-header-1 {
   text-align: center;
 }
-
 .chart-header-2{
   text-align: center;
 }
