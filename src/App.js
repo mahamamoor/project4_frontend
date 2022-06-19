@@ -26,11 +26,11 @@ const App = () => {
   let [user, setUser] = useState('')
 
   // API switch between local and heroku for SHOP
-  // let api_path = 'https://etsyish-shop.herokuapp.com/api/shop'
-  let api_path = 'http://localhost:8000/api/shop'
+  let api_path = 'https://etsyish-shop.herokuapp.com/api/shop'
+  // let api_path = 'http://localhost:8000/api/shop'
 
   // API switch between local and heroku for CART
-  // let cart_api_path = 'https://etsyish-shop.herokuapp.com/api/cart'
+  let cart_api_path = 'https://etsyish-shop.herokuapp.com/api/cart'
   let cart_api_path = 'http://localhost:8000/api/cart'
 
 
