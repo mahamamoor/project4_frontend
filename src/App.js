@@ -82,7 +82,7 @@ const App = () => {
     axios.get(cart_api_path)
     .then(
       (response) => setCart(response.data),
-      (err.response.data) => console.error(err.response.data)
+      (err) => console.error(err)
     )
     .catch((error.response.data) => console.error(error.response.data))
   }
