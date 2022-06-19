@@ -82,9 +82,9 @@ const App = () => {
     axios.get(cart_api_path)
     .then(
       (response) => setCart(response.data),
-      (err) => console.error(err.response.data)
+      (err.response.data) => console.error(err.response.data)
     )
-    .catch((error) => console.error(error.response.data))
+    .catch((error.response.data) => console.error(error.response.data))
   }
 
   const handleCreate = (addProduct) => {
