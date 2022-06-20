@@ -38,7 +38,7 @@
 #rim{
     border-radius: 50%;
 }
-<<<<<<< HEAD
+
 
 
 #addTitle{
@@ -59,11 +59,11 @@
     margin-top: .5em;
 }
 
-footer{
+footer {
     background-color: #2f456c;
     color: whitesmoke;
     padding: 2em;
-=======
+}
 .chart-container{
   padding-top: 30px;
   padding-left: 15px;
@@ -75,7 +75,7 @@ footer{
 }
 .chart-header-2{
   text-align: center;
->>>>>>> dev
+
 }
 #logo{
     display: flex;
@@ -102,4 +102,31 @@ footer{
 
 .chart-header-2{
   text-align: center;
+}
+.add-item-header {
+  text-align: center;
+}
+.add {
+  width: 60%;
+  background-color: whitesmoke;
+  margin: auto;
+}
+.add input[type=text], input[type=number] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0px;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+.item-image {
+  float: left;
+    width:  300px;
+    height: 300px;
+    object-fit: cover;
+}
+.cart-item {
+  display: flex;
+  gap: 10px;
 }

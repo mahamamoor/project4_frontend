@@ -17,6 +17,7 @@ import Dropdown from 'react-bootstrap/Dropdown'
 import Auth from './components/auth'
 import Chart from './components/Chart.js'
 import './App.css'
+
 const App = () => {
   let [item, setItem] = useState([])
   let [cart, setCart] = useState([])
@@ -26,19 +27,18 @@ const App = () => {
   let [user, setUser] = useState('')
 
   // API switch between local and heroku for SHOP
-  let api_path = 'https://etsyish-shop.herokuapp.com/api/shop'
-  // let api_path = 'http://localhost:8000/api/shop'
+  // let api_path = 'https://etsyish-shop.herokuapp.com/api/shop'
+  let api_path = 'http://localhost:8000/api/shop'
 
   // API switch between local and heroku for CART
-  let cart_api_path = 'https://etsyish-shop.herokuapp.com/api/cart'
-  // let cart_api_path = 'http://localhost:8000/api/cart'
+  // let cart_api_path = 'https://etsyish-shop.herokuapp.com/api/cart'
+  let cart_api_path = 'http://localhost:8000/api/cart'
 
-
+  // API switch between local and heroku for USER AUTH
   let auth_api_path = 'http://localhost:8000/api/auth'
-
-
   // let auth_api_path = 'https://etsyish-shop.herokuapp.com/api/auth'
 
+  // functions to set views / what displays on page
   const shopView = () => {
     setView('shop')
   }
@@ -60,6 +60,11 @@ const App = () => {
     setView('finances')
   }
 
+  const addItemView = () => {
+    setView('addItem')
+  }
+
+  // get requests
   const getItem = () => {
     axios
     .get(api_path)
@@ -87,6 +92,7 @@ const App = () => {
     .catch((error) => console.error(error.response.data))
   }
 
+  // create new item
   const handleCreate = (addProduct) => {
     axios
     .post(api_path, addProduct)
@@ -96,6 +102,7 @@ const App = () => {
     })
   }
 
+  // edit item
   const handleUpdate = (editProduct) => {
     console.log(editProduct)
     axios
@@ -107,6 +114,7 @@ const App = () => {
       })
   }
 
+  // delete item (from Shop db)
   const handleDelete = (event, deletedProduct) => {
     axios
       .delete(api_path + '/' + event.target.value)
@@ -115,6 +123,7 @@ const App = () => {
       })
   }
 
+  // delete item (from Cart db)
   const handleCartDelete = (event, deletedCartProduct) => {
     axios
       .delete(cart_api_path + '/' + event.target.value)
@@ -123,6 +132,7 @@ const App = () => {
       })
   }
 
+  // delete entire Cart db
   const deleteFullCart = () => {
     cart.map((deleteItem) => {
       axios
@@ -133,6 +143,7 @@ const App = () => {
     })
   }
 
+  // add item to cart
   const handleAddToCart = (addedItem) => {
     axios.post(cart_api_path, addedItem)
     .then((response) => {
@@ -140,6 +151,7 @@ const App = () => {
     })
   }
 
+  // create new user
   const createUser = (user) => {
     axios.post(auth_api_path, user)
     .then((response) =>{
@@ -147,13 +159,12 @@ const App = () => {
     })
   }
 
+  // useEffect for displaying pages on startup
   useEffect(() => {
     getItem()
     getCart()
     getUser()
   }, [])
-
-
 
   return (
     <>
@@ -163,7 +174,7 @@ const App = () => {
           <div className="search-bar-div">
           <input className="search-bar" placeholder="Search for Item" onChange={event => setQuery(event.target.value)}/>
         </div>
-        { view == 'shop' ?
+        { view == 'shop' || 'addItem' ?
            <img src="cart-icon-28356.png" onClick={cartView} className='view-cart'/> : null }
 
           {view == 'cart' ?
@@ -206,7 +217,10 @@ const App = () => {
       </div>
       { view == 'shop' ?
       <>
-      <Add handleCreate={handleCreate}/>
+      <div className="add-item-header">
+        <h2 id='addTitle'>Want to add something to this amazing site?</h2>
+        <Button variant="outline-dark" onClick={addItemView}>Click Here To Add Your Item</Button>
+      </div>
         {item.filter(item => {
           if (query === '') {
             return item
@@ -218,7 +232,7 @@ const App = () => {
             <div className="items">
               <div className="item" key={item.id}>
                 <h4>{item.title}</h4>
-                <img src={item.image} width="300" height="300" />
+                <img src={item.image} className="item-image" />
                 <h5>About - {item.description}</h5>
                 <h5>Price - ${item.price}</h5>
                 <h4>✰✰✰✰✰✰✰(everyone)</h4>
@@ -257,6 +271,14 @@ const App = () => {
         </>
         : null}
 
+      {view == 'addItem' ?
+        <>
+          <Add handleCreate={handleCreate}/>
+          <Button variant="outline-dark" onClick={shopView}>Return to Shop</Button>
+          <br/>
+        </>
+      : null}
+
       {view == 'cart' ?
         <>
         <h1>Your Cart:</h1>
@@ -264,7 +286,7 @@ const App = () => {
         {cart.map((cartItem) => {
           return (
             <div className="cart-item" key={cartItem.id}>
-              <h4>{cartItem.title}, ${cartItem.price}.00, quantity: {cartItem.quantity}</h4>
+              <h4>{cartItem.title}, ${cartItem.price}.00 quantity: {cartItem.quantity}</h4>
               <Button variant="outline-dark"  onClick={(event)=> {handleCartDelete(event, cartItem)}} value={cartItem.id}>delete item
               </Button>
             </div>
@@ -284,7 +306,8 @@ const App = () => {
         {cart.map((cartItem) => {
           return (
             <div className="cart-item" key={cartItem.id}>
-              <img src={cartItem.image}/>
+              <img src={cartItem.image} className="item-image"/>
+              <br/>
               <h4>{cartItem.title} x {cartItem.quantity}</h4>
             </div>
           )
@@ -319,6 +342,5 @@ const App = () => {
     </>
   )
 }
-
 
 export default App;
