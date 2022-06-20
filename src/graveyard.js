@@ -1,3 +1,5 @@
+<button onClick={() => window.location.reload()}>Refresh Chart</button>
+
 import React from "react";
 import {
   Chart as ChartJS,
