@@ -30,6 +30,16 @@ class Chart extends Component {
             label: 'Earnings',
             data: [500, 600, 700, 800, 300, 400],
             backgroundColor: "rgba(255, 99, 132, 0.5)"
+          },
+          {
+            label: 'Gross Profit',
+            data: [400, 450, 600, 750, 240, 390],
+            backgroundColor: "rgba(53, 162, 235, 0.5)"
+          },
+          {
+            label: 'Operating Income',
+            data: [300, 400, 550, 700, 200, 350],
+            backgroundColor: "rgba(255, 148, 120, 0.5)"
           }
         ]
       }
@@ -41,7 +51,7 @@ class Chart extends Component {
         <Bar
           data={this.state.chartData}
           options={{
-            maintainAspectRatio: false
+            aspectRatio: 3
           }}
         />
       </div>

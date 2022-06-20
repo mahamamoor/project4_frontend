@@ -38,6 +38,7 @@
 #rim{
     border-radius: 50%;
 }
+<<<<<<< HEAD
 
 
 #addTitle{
@@ -62,6 +63,19 @@ footer{
     background-color: #2f456c;
     color: whitesmoke;
     padding: 2em;
+=======
+.chart-container{
+  padding-top: 30px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-bottom: 40px;
+}
+.chart-header-1 {
+  text-align: center;
+}
+.chart-header-2{
+  text-align: center;
+>>>>>>> dev
 }
 #logo{
     display: flex;
